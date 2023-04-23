@@ -20,6 +20,6 @@ RUN go build -ldflags '-extldflags "-static -lm"' -tags 'osusergo netgo static_b
 # Execution container
 FROM gcr.io/distroless/static:nonroot
 
-COPY --from=builder /workdir/snider /snider
+COPY --from=build /workdir/snider /snider
 
 ENTRYPOINT ["/snider"]
