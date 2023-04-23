@@ -164,7 +164,7 @@ func (s *Server) handleConnection(conn net.Conn) {
 		c.l.Errorf("unhandled error: %+v", err)
 
 		var opError *net.OpError
-		if !errors.As(err, &opError) && !errors.Is(err, io.EOF) {
+		if !errors.As(err, &opError) && !errors.Is(err, io.EOF) && !errors.Is(err, io.ErrUnexpectedEOF) {
 			// Connection is likely still alive, so send a 421
 			smtpError := &SMTPError{
 				BasicStatus:    451,

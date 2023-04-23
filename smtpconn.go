@@ -7,6 +7,7 @@ import (
 	"io"
 	"net"
 
+	"github.com/cockroachdb/errors"
 	"go.uber.org/zap"
 )
 
@@ -77,6 +78,10 @@ func (c *SMTPConn) Readlinef(pattern string, args ...any) error {
 
 	n, err := fmt.Sscanf(string(trimmedLine), pattern, args...)
 	if err != nil {
+		if errors.Is(err, io.EOF) {
+			return errors.New("unexpected EOF during scanf")
+		}
+
 		return err
 	}
 
